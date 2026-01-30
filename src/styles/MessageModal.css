@@ -1,0 +1,214 @@
+.message-modal-overlay {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  z-index: 9999;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+  pointer-events: none;
+}
+
+.message-modal-overlay.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  pointer-events: all;
+}
+
+.message-modal {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 300px;
+  max-width: 500px;
+  padding: 16px 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.message-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.message-content {
+  flex: 1;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+}
+
+.message-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.message-close:hover {
+  color: #333;
+}
+
+/* 成功訊息 */
+.message-modal.success {
+  border-left: 4px solid #4caf50;
+}
+
+.message-modal.success .message-icon {
+  background: #e8f5e9;
+  color: #4caf50;
+}
+
+/* 錯誤訊息 */
+.message-modal.error {
+  border-left: 4px solid #f44336;
+}
+
+.message-modal.error .message-icon {
+  background: #ffebee;
+  color: #f44336;
+}
+
+/* 警告訊息 */
+.message-modal.warning {
+  border-left: 4px solid #ff9800;
+}
+
+.message-modal.warning .message-icon {
+  background: #fff3e0;
+  color: #ff9800;
+}
+
+/* 資訊訊息 */
+.message-modal.info {
+  border-left: 4px solid #2196f3;
+}
+
+.message-modal.info .message-icon {
+  background: #e3f2fd;
+  color: #2196f3;
+}
+
+/* 響應式設計 */
+@media (max-width: 600px) {
+  .message-modal {
+    min-width: 280px;
+    max-width: calc(100vw - 40px);
+  }
+}
+
+/* ===== 自定義內容 Modal 樣式 ===== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.modal-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-container {
+  position: relative;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: auto;
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    transform: scale(0.9) translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 50%;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: all 0.2s;
+  z-index: 1;
+}
+
+.modal-close-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.modal-content {
+  padding: 24px;
+}
+
+/* 響應式設計 - 自定義 Modal */
+@media (max-width: 600px) {
+  .modal-container {
+    max-width: 95vw;
+    max-height: 95vh;
+    margin: 10px;
+  }
+
+  .modal-content {
+    padding: 16px;
+  }
+}
