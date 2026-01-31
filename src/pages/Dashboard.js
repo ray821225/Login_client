@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCurrentUser, logout } from "../services/authService";
+import {
+  getCurrentUser,
+  logout,
+  isAuthenticated,
+} from "../services/authService";
 
-function Dashboard() {
+const Dashboard = () => {
   const navigate = useNavigate();
   const user = getCurrentUser();
 
@@ -10,6 +14,11 @@ function Dashboard() {
     logout();
     navigate("/login");
   };
+
+  useEffect(() => {
+    if (isAuthenticated()) return;
+    navigate("/login");
+  }, [navigate]);
 
   return (
     <div className="dashboard-container">
@@ -24,6 +33,6 @@ function Dashboard() {
       </div>
     </div>
   );
-}
+};
 
 export default Dashboard;
