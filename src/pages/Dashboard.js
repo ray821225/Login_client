@@ -1,14 +1,39 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import {
   getCurrentUser,
   logout,
   isAuthenticated,
 } from "../services/authService";
+import { getHistory } from "../services/attendanceService";
+import AttendancePanel from "../components/AttendancePanel";
+import AttendanceHistory from "../components/AttendanceHistory";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const user = getCurrentUser();
+
+  const [records, setRecords] = useState([]);
+  const [pagination, setPagination] = useState({ page: 1, totalPages: 1 });
+  const [historyLoading, setHistoryLoading] = useState(true);
+
+  const fetchHistory = useCallback(async (page = 1) => {
+    try {
+      setHistoryLoading(true);
+      const data = await getHistory(page, 7);
+      setRecords(data.records);
+      setPagination(data.pagination);
+    } catch (err) {
+      console.error("取得歷史失敗", err);
+    } finally {
+      setHistoryLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchHistory();
+  }, [fetchHistory]);
 
   const handleLogout = () => {
     logout();
@@ -28,9 +53,13 @@ const Dashboard = () => {
           登出
         </button>
       </div>
-      <div className="dashboard-content">
-        <p>您已成功登入系統。</p>
-      </div>
+      <AttendancePanel fetchHistory={fetchHistory} />
+      <AttendanceHistory
+        records={records}
+        pagination={pagination}
+        loading={historyLoading}
+        onPageChange={fetchHistory}
+      />
     </div>
   );
 };

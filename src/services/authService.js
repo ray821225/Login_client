@@ -1,6 +1,24 @@
 import axios from "axios";
+import store from "../store";
+import { showError } from "../store/notifySlice";
 
 const API_URL = "/api/auth";
+
+// 攔截器：處理被其他裝置踢出的情況
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (
+      error.response?.status === 401 &&
+      error.response?.data?.code === "SESSION_REPLACED"
+    ) {
+      localStorage.removeItem("user");
+      store.dispatch(showError("帳號已在其他裝置登入，請重新登入"));
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  }
+);
 
 // 登入
 export const login = async (email, password) => {
