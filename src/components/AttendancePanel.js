@@ -1,28 +1,49 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, memo } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { clock, getToday } from "../services/attendanceService";
 import { showSuccess, showError } from "../store/notifySlice";
+
+//HOC
+const LiveClock = memo(() => {
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <>
+      <ClockDisplay>
+        {currentTime.toLocaleTimeString("zh-TW", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        })}
+      </ClockDisplay>
+      <DateDisplay>
+        {currentTime.toLocaleDateString("zh-TW", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          weekday: "long",
+        })}
+      </DateDisplay>
+    </>
+  );
+});
 
 const AttendancePanel = ({ fetchHistory }) => {
   const dispatch = useDispatch();
   const [todayRecord, setTodayRecord] = useState(null);
   const [loading, setLoading] = useState(true);
   const [clocking, setClocking] = useState(false);
-  const [currentTime, setCurrentTime] = useState(new Date());
-
-  // 即時時鐘
-  useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   const fetchToday = useCallback(async () => {
     try {
       setLoading(true);
       const data = await getToday();
-
-      console.log(data, "data");
       setTodayRecord(data.attendance);
     } catch (err) {
       console.error("取得今日狀態失敗", err);
@@ -76,22 +97,7 @@ const AttendancePanel = ({ fetchHistory }) => {
 
   return (
     <Panel>
-      <ClockDisplay>
-        {currentTime.toLocaleTimeString("zh-TW", {
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        })}
-      </ClockDisplay>
-
-      <DateDisplay>
-        {currentTime.toLocaleDateString("zh-TW", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-          weekday: "long",
-        })}
-      </DateDisplay>
+      <LiveClock />
 
       <StatusBadge status={status}>
         {status === "not_clocked_in" && "尚未打卡"}
