@@ -51,3 +51,9 @@ export const generateQR = async () => {
   const response = await axios.get(`${QR_URL}/generate`);
   return response.data;
 };
+
+// 查詢 QR Token 狀態
+export const getQRStatus = async (token) => {
+  const response = await axios.get(`${QR_URL}/status/${token}`);
+  return response.data;
+};
