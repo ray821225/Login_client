@@ -81,12 +81,15 @@ const ClockPage = () => {
   );
 };
 
+const SAVED_EMAIL_KEY = "clock_saved_email";
+
 const LoginForm = ({ onSubmit, error }) => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(() => localStorage.getItem(SAVED_EMAIL_KEY) || "");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    localStorage.setItem(SAVED_EMAIL_KEY, email);
     onSubmit({ email, password });
   };
 

@@ -11,28 +11,33 @@ const KioskPage = () => {
   const [error, setError] = useState(null);
 
   const pollRef = useRef(null);
-
-  const stopPolling = () => clearInterval(pollRef.current);
+  const isRefreshingRef = useRef(false);
 
   const refreshQR = useCallback(async () => {
-    stopPolling();
+    // 防止多個 async callback 同時觸發刷新
+    if (isRefreshingRef.current) return;
+    isRefreshingRef.current = true;
+
+    clearInterval(pollRef.current);
     setClockedUser(null);
     setError(null);
 
     try {
       const data = await generateQR();
       setQrData(data);
+      isRefreshingRef.current = false;
 
       // 輪詢打卡狀態，每 2 秒查一次
       pollRef.current = setInterval(async () => {
         try {
           const status = await getQRStatus(data.token);
           if (!status.exists) {
+            clearInterval(pollRef.current);
             refreshQR();
             return;
           }
           if (status.status === "used") {
-            stopPolling();
+            clearInterval(pollRef.current);
             setClockedUser({ username: status.usedBy });
             setTimeout(() => refreshQR(), 3000);
           }
@@ -41,13 +46,14 @@ const KioskPage = () => {
         }
       }, 2000);
     } catch {
+      isRefreshingRef.current = false;
       setError("無法產生 QR Code，請檢查網路連線");
     }
   }, []);
 
   useEffect(() => {
     refreshQR();
-    return () => stopPolling();
+    return () => clearInterval(pollRef.current);
   }, [refreshQR]);
 
   return (
@@ -87,7 +93,8 @@ const KioskPage = () => {
 
 // 倒數計時（獨立組件，每秒更新不影響 QR Code）
 const CountdownText = React.memo(({ expiresAt }) => {
-  const calc = () => Math.max(0, Math.round((new Date(expiresAt) - Date.now()) / 1000));
+  const calc = () =>
+    Math.max(0, Math.round((new Date(expiresAt) - Date.now()) / 1000));
   const [seconds, setSeconds] = useState(calc);
 
   useEffect(() => {
@@ -95,7 +102,7 @@ const CountdownText = React.memo(({ expiresAt }) => {
     return () => clearInterval(t);
   }, [expiresAt]);
 
-  return <Countdown urgent={seconds <= 10}>{seconds} 秒後更新</Countdown>;
+  return <Countdown $urgent={seconds <= 10}>{seconds} 秒後更新</Countdown>;
 });
 
 // 平板上的即時時鐘（獨立組件避免整頁刷新）
@@ -191,8 +198,8 @@ const pulse = keyframes`
 
 const Countdown = styled.div`
   font-size: 16px;
-  color: ${({ urgent }) => (urgent ? "#ff6b6b" : "rgba(255,255,255,0.5)")};
-  animation: ${({ urgent }) => (urgent ? pulse : "none")} 1s infinite;
+  color: ${({ $urgent }) => ($urgent ? "#ff6b6b" : "rgba(255,255,255,0.5)")};
+  animation: ${({ $urgent }) => ($urgent ? pulse : "none")} 1s infinite;
 `;
 
 const fadeIn = keyframes`
