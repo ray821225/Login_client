@@ -1,3 +1,9 @@
 ﻿# Login_client
 
-Easy login
+簽到系統
+
+1.QR code 簽到
+2.裝置切換登出
+
+
+
