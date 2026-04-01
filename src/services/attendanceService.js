@@ -52,6 +52,15 @@ export const generateQR = async () => {
   return response.data;
 };
 
+// Admin：查詢所有員工出勤
+export const getAllAttendance = async (page = 1, limit = 20, yearMonth = "", username = "") => {
+  const params = new URLSearchParams({ page, limit });
+  if (yearMonth) params.append("yearMonth", yearMonth);
+  if (username) params.append("username", username);
+  const response = await axios.get(`${API_URL}/admin/all?${params}`, getAuthHeaders());
+  return response.data;
+};
+
 // 查詢 QR Token 狀態
 export const getQRStatus = async (token) => {
   const response = await axios.get(`${QR_URL}/status/${token}`);

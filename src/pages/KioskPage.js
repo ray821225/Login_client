@@ -9,6 +9,7 @@ const KioskPage = () => {
   const [qrData, setQrData] = useState(null);
   const [clockedUser, setClockedUser] = useState(null);
   const [error, setError] = useState(null);
+  const qrSize = window.innerWidth <= 480 ? 180 : 240;
 
   const pollRef = useRef(null);
   const isRefreshingRef = useRef(false);
@@ -79,7 +80,7 @@ const KioskPage = () => {
           <>
             <Instruction>請用手機掃描 QR Code 打卡</Instruction>
             <QRWrapper>
-              <QRCode value={qrData.qrContent} size={240} />
+              <QRCode value={qrData.qrContent} size={qrSize} />
             </QRWrapper>
             <CountdownText expiresAt={qrData.expiresAt} />
           </>
@@ -145,6 +146,14 @@ const Header = styled.div`
   align-items: center;
   padding: 24px 40px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 20px;
+    text-align: center;
+  }
 `;
 
 const CompanyName = styled.h1`
@@ -152,6 +161,11 @@ const CompanyName = styled.h1`
   font-weight: 700;
   margin: 0;
   letter-spacing: 2px;
+
+  @media (max-width: 480px) {
+    font-size: 20px;
+    letter-spacing: 1px;
+  }
 `;
 
 const ClockText = styled.div`
@@ -159,6 +173,15 @@ const ClockText = styled.div`
   font-weight: 700;
   text-align: right;
   font-family: "Courier New", monospace;
+
+  @media (max-width: 768px) {
+    text-align: center;
+    font-size: 24px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 20px;
+  }
 `;
 
 const DateText = styled.div`
@@ -166,6 +189,10 @@ const DateText = styled.div`
   font-weight: 400;
   color: rgba(255, 255, 255, 0.7);
   margin-top: 4px;
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+  }
 `;
 
 const Content = styled.div`
@@ -182,6 +209,12 @@ const Instruction = styled.p`
   color: rgba(255, 255, 255, 0.85);
   margin: 0;
   letter-spacing: 1px;
+  text-align: center;
+  padding: 0 16px;
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+  }
 `;
 
 const QRWrapper = styled.div`
@@ -189,6 +222,10 @@ const QRWrapper = styled.div`
   padding: 24px;
   border-radius: 16px;
   box-shadow: 0 0 60px rgba(102, 126, 234, 0.4);
+
+  @media (max-width: 480px) {
+    padding: 16px;
+  }
 `;
 
 const pulse = keyframes`

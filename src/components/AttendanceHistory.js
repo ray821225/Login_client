@@ -34,6 +34,7 @@ const AttendanceHistory = ({ records, pagination, loading, onPageChange }) => {
         <EmptyText>尚無簽到紀錄</EmptyText>
       ) : (
         <>
+          <TableWrapper>
           <Table>
             <thead>
               <tr>
@@ -59,6 +60,7 @@ const AttendanceHistory = ({ records, pagination, loading, onPageChange }) => {
               ))}
             </tbody>
           </Table>
+          </TableWrapper>
           {pagination.totalPages > 1 && (
             <PaginationRow>
               <PageBtn
@@ -90,6 +92,15 @@ const HistoryPanel = styled.div`
   padding: 24px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   margin-top: 20px;
+
+  @media (max-width: 480px) {
+    padding: 16px 12px;
+  }
+`;
+
+const TableWrapper = styled.div`
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 `;
 
 const Title = styled.h3`
@@ -100,6 +111,7 @@ const Title = styled.h3`
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
+  min-width: 360px;
 
   th,
   td {
@@ -107,6 +119,7 @@ const Table = styled.table`
     text-align: center;
     border-bottom: 1px solid #eee;
     font-size: 14px;
+    white-space: nowrap;
   }
 
   th {

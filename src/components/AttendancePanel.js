@@ -129,6 +129,10 @@ const Panel = styled.div`
   padding: 30px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
+
+  @media (max-width: 480px) {
+    padding: 20px 16px;
+  }
 `;
 
 const ClockDisplay = styled.div`
@@ -136,12 +140,20 @@ const ClockDisplay = styled.div`
   font-weight: 700;
   color: #333;
   font-family: "Courier New", monospace;
+
+  @media (max-width: 480px) {
+    font-size: 36px;
+  }
 `;
 
 const DateDisplay = styled.div`
   font-size: 16px;
   color: #666;
   margin: 8px 0 20px;
+
+  @media (max-width: 480px) {
+    font-size: 13px;
+  }
 `;
 
 const StatusBadge = styled.span`
@@ -170,6 +182,10 @@ const TimeRow = styled.div`
   justify-content: center;
   gap: 40px;
   margin: 20px 0;
+
+  @media (max-width: 480px) {
+    gap: 24px;
+  }
 `;
 
 const TimeBlock = styled.div``;
@@ -184,6 +200,10 @@ const TimeValue = styled.div`
   font-size: 20px;
   font-weight: 600;
   color: #333;
+
+  @media (max-width: 480px) {
+    font-size: 17px;
+  }
 `;
 
 const ClockButton = styled.button`
@@ -210,6 +230,12 @@ const ClockButton = styled.button`
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
   }
 `;
 
