@@ -12,6 +12,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import KioskPage from "./pages/KioskPage";
 import ClockPage from "./pages/ClockPage";
+import AdminPage from "./pages/AdminPage";
 import NotifyModal from "./components/NotifyModal";
 import "./styles/App.css";
 
@@ -26,6 +27,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/kiosk" element={<KioskPage />} />
             <Route path="/clock" element={<ClockPage />} />
+            <Route path="/admin" element={<AdminPage />} />
             <Route path="/" element={<Navigate to="/login" replace />} />
           </Routes>
         </div>

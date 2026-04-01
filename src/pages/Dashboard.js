@@ -49,9 +49,16 @@ const Dashboard = () => {
     <div className="dashboard-container">
       <div className="dashboard-header">
         <h2>歡迎，{user?.detail.username || "Guest"}！</h2>
-        <button onClick={handleLogout} className="btn-secondary">
-          登出
-        </button>
+        <div style={{ display: "flex", gap: "8px" }}>
+          {user?.detail?.role === "admin" && (
+            <button onClick={() => navigate("/admin")} className="btn-secondary">
+              管理員後台
+            </button>
+          )}
+          <button onClick={handleLogout} className="btn-secondary">
+            登出
+          </button>
+        </div>
       </div>
       <AttendancePanel fetchHistory={fetchHistory} />
       <AttendanceHistory
