@@ -79,6 +79,8 @@ const AdminPage = () => {
     fetchRecords(1, filters);
   };
 
+  console.log("pull reqest");
+
   const formatTime = (dateStr) => {
     if (!dateStr) return "--:--";
     return new Date(dateStr).toLocaleTimeString("zh-TW", {
@@ -150,35 +152,37 @@ const AdminPage = () => {
         ) : (
           <>
             <TableWrapper>
-            <Table>
-              <thead>
-                <tr>
-                  <th>員工姓名</th>
-                  <th>Email</th>
-                  <th>日期</th>
-                  <th>上班時間</th>
-                  <th>下班時間</th>
-                  <th>打卡方式</th>
-                  <th>狀態</th>
-                </tr>
-              </thead>
-              <tbody>
-                {records.map((r) => (
-                  <tr key={r._id}>
-                    <td>{r.user?.username || "—"}</td>
-                    <td>{r.user?.email || "—"}</td>
-                    <td>{r.date}</td>
-                    <td>{formatTime(r.clockIn)}</td>
-                    <td>{formatTime(r.clockOut)}</td>
-                    <td>{r.clockInMethod === "qrcode" ? "QR 掃碼" : "手動"}</td>
-                    <td>
-                      <StatusDot $completed={r.status === "completed"} />
-                      {r.status === "completed" ? "已下班" : "上班中"}
-                    </td>
+              <Table>
+                <thead>
+                  <tr>
+                    <th>員工姓名</th>
+                    <th>Email</th>
+                    <th>日期</th>
+                    <th>上班時間</th>
+                    <th>下班時間</th>
+                    <th>打卡方式</th>
+                    <th>狀態</th>
                   </tr>
-                ))}
-              </tbody>
-            </Table>
+                </thead>
+                <tbody>
+                  {records.map((r) => (
+                    <tr key={r._id}>
+                      <td>{r.user?.username || "—"}</td>
+                      <td>{r.user?.email || "—"}</td>
+                      <td>{r.date}</td>
+                      <td>{formatTime(r.clockIn)}</td>
+                      <td>{formatTime(r.clockOut)}</td>
+                      <td>
+                        {r.clockInMethod === "qrcode" ? "QR 掃碼" : "手動"}
+                      </td>
+                      <td>
+                        <StatusDot $completed={r.status === "completed"} />
+                        {r.status === "completed" ? "已下班" : "上班中"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
             </TableWrapper>
 
             {pagination.totalPages > 1 && (
